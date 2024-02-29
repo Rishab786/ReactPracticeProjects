@@ -1,36 +1,31 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import User from "./User";
 
 const Body = () => {
-    // const [userName, setUserName] = useState("");
-    // const [userAge, setUserAge] = useState("");
-    const userNameRef=useRef();
-    const userAgeRef=useRef();
-    const userCollegeRef=useRef();
-    let [list, setList] = useState([{ name: "s", age: 19 ,college:"abc"}]);
 
-    const displayUser = (e) => {
-        e.preventDefault();
-        if (userNameRef.current.value.trim() === "") {
-            alert("Enter Valid Name");
-        } else if (userAgeRef.current.value< 0) {
-            alert("Age Must be Greater then 0");
-        } else {
-            const obj = {
-                name: userNameRef.current.value,
-                age: userAgeRef.current.value,
-                college:userCollegeRef.current.value
-            };
+    const [name,setName]=useState('');
+    const [age,setAge]=useState('');
+    const [college,setCollege]=useState('');
+    const [isValidForm,setIsValidForm]=useState('false');
+    
+    useEffect(()=>{
+      if(name.trim().length===0 && age<0 && college.trim().length===0)
+      {
+        alert("Enter Valid input");
+        setIsValidForm("false");
+      }
+      else 
+      {
+        setIsValidForm("true");
+      }
 
-            list.push(obj);
-            setList(list);
-            console.log(list);
-            userNameRef.current.value="";
-            userAgeRef.current.value="";
-            userCollegeRef.current.value="";
-           
-        }
-    };
+    }
+, [name,age,college]);
+
+
+    let [list, setList] = useState([{ name: "s", age: 19, college: "abc" }]);
+
+    
     return (
         <div>
             <form>
@@ -38,26 +33,29 @@ const Body = () => {
                     UserName
                     <input
                         type="text"
-                        ref={userNameRef}
+                        value={name}
+                        onChange={(e)=>setName(e.target.value)}
                     />
                 </label>
                 <label>
                     Age
                     <input
                         type="number"
-                        ref={userAgeRef}
+                        value={age}
+                        onChange={(e)=>setAge(e.target.value)}
                     />
                 </label>
                 <label>
                     CollegeName
                     <input
                         type="text"
-                        ref={userCollegeRef}
+                        value={college}
+                        onChange={(e)=>setCollege(e.target.value)}
                     />
                 </label>
-                <button type="submit" onClick={displayUser}>
-                    {" "}
-                    Add{" "}
+                <button type="submit" >
+                   
+                    Add
                 </button>
             </form>
             {list.map((val, index) => {
